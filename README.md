@@ -8,6 +8,8 @@
 
 An ES (JavaScript & TypeScript) CLI and module to get the non-cryptographic hash of the data with algorithm SDBM.
 
+Currently, only 32 bits is supported.
+
 ## 🔰 Begin
 
 ### 🎯 Targets

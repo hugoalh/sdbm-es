@@ -1,7 +1,7 @@
 const bitClamp: bigint = 2n ** 32n - 1n;
 export type SDBMAcceptDataType = string | BigUint64Array | Uint8Array | Uint16Array | Uint32Array;
 /**
- * Get the non-cryptographic hash of the data with algorithm SDBM.
+ * Get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
  */
 export class SDBM {
 	#bin: bigint = 0n;
