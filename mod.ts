@@ -16,7 +16,7 @@ export class SDBM {
 		}
 	}
 	/**
-	 * Get the non-cryptographic hash of the data, in big integer.
+	 * Get the non-cryptographic hash of the data, in original format.
 	 * @returns {bigint}
 	 */
 	hash(): bigint {
@@ -46,6 +46,18 @@ export class SDBM {
 	hashBase36(): string {
 		return this.hashNumber().toString(36).toUpperCase();
 	}
+	/**
+	 * Get the non-cryptographic hash of the data, in big integer.
+	 * @returns {bigint}
+	 */
+	hashBigInt(): bigint {
+		return this.hash();
+	}
+	/**
+	 * Get the non-cryptographic hash of the data, in big integer.
+	 * @returns {bigint}
+	 */
+	hashBigInteger: () => bigint = this.hashBigInt;
 	/**
 	 * Get the non-cryptographic hash of the data, in hex/hexadecimal without padding.
 	 * @returns {string}

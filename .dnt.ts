@@ -23,6 +23,7 @@ await invokeDenoNodeJSTransformer({
 		version: configJSR.getVersion(),
 		description: "A CLI and module to get the non-cryptographic hash of the data with algorithm SDBM.",
 		keywords: [
+			"hash",
 			"sdbm"
 		],
 		homepage: "https://github.com/hugoalh/sdbm-es#readme",
