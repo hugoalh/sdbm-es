@@ -49,21 +49,21 @@ export class SDBM {
 	 * @returns {string}
 	 */
 	hashBase16(): string {
-		return this.hashNumber().toString(16).toUpperCase();
+		return this.hashBigInt().toString(16).toUpperCase();
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in Base32Hex ({@link https://datatracker.ietf.org/doc/html/rfc4648#section-7 RFC 4648 §7}).
 	 * @returns {string}
 	 */
 	hashBase32Hex(): string {
-		return this.hashNumber().toString(32).toUpperCase();
+		return this.hashBigInt().toString(32).toUpperCase();
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in Base36.
 	 * @returns {string}
 	 */
 	hashBase36(): string {
-		return this.hashNumber().toString(36).toUpperCase();
+		return this.hashBigInt().toString(36).toUpperCase();
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in big integer.
