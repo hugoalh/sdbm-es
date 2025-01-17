@@ -49,5 +49,6 @@ Deno.test("Stream 1", {
 		read: true
 	}
 }, async () => {
-	console.log((await SDBM.fromFile("./README.md")).hashHexPadding());
+	using file = await Deno.open("./README.md");
+	console.log((await SDBM.fromStream(file.readable)).hashHexPadding());
 });

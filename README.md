@@ -60,6 +60,8 @@ Currently, only 32 bits is supported.
 - ```ts
   class SDBM {
     constructor(data?: SDBMAcceptDataType);
+    freeze(): this;
+    get freezed(): boolean;
     hash(): bigint;
     hashBase16(): string;
     hashBase32Hex(): string;
@@ -69,8 +71,6 @@ Currently, only 32 bits is supported.
     hashHexPadding(): string;
     hashNumber(): number;
     update(data: SDBMAcceptDataType): this;
-    static fromFile(filePath: string | URL): Promise<SDBM>;
-    static fromFileSync(filePath: string | URL): SDBM;
     static fromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<SDBM>;
   }
   ```

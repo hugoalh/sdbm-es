@@ -4,8 +4,12 @@ export type SDBMAcceptDataType = string | BigUint64Array | Uint8Array | Uint16Ar
  * Get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
  */
 export class SDBM {
-	#bin: bigint = 0n;
+	get [Symbol.toStringTag](): string {
+		return "SDBM";
+	}
+	#freezed: boolean = false;
 	#hash: bigint | null = null;
+	#bin: bigint = 0n;
 	/**
 	 * Initialize.
 	 * @param {SDBMAcceptDataType} [data] Data. Can append later via the method {@linkcode SDBM.update}.
@@ -14,6 +18,21 @@ export class SDBM {
 		if (typeof data !== "undefined") {
 			this.update(data);
 		}
+	}
+	/**
+	 * Freeze the instance to prevent any update.
+	 * @returns {this}
+	 */
+	freeze(): this {
+		this.#freezed = true;
+		return this;
+	}
+	/**
+	 * Whether the instance is freezed.
+	 * @returns {boolean}
+	 */
+	get freezed(): boolean {
+		return this.#freezed;
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in original format.
@@ -85,6 +104,9 @@ export class SDBM {
 	 * @returns {this}
 	 */
 	update(data: SDBMAcceptDataType): this {
+		if (this.#freezed) {
+			throw new Error(`Instance is freezed!`);
+		}
 		this.#hash = null;
 		const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
 		for (let index: number = 0; index < raw.length; index += 1) {
@@ -93,34 +115,7 @@ export class SDBM {
 		return this;
 	}
 	/**
-	 * Initialize from file, asynchronously.
-	 * 
-	 * > **🛡️ Runtime Permissions**
-	 * > 
-	 * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
-	 * >   - *Resources*
-	 * @param {string | URL} filePath Path of the file.
-	 * @returns {Promise<SDBM>}
-	 */
-	static async fromFile(filePath: string | URL): Promise<SDBM> {
-		using file: Deno.FsFile = await Deno.open(filePath);
-		return await this.fromStream(file.readable);
-	}
-	/**
-	 * Initialize from file, synchronously.
-	 * 
-	 * > **🛡️ Runtime Permissions**
-	 * > 
-	 * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
-	 * >   - *Resources*
-	 * @param {string | URL} filePath Path of the file.
-	 * @returns {SDBM}
-	 */
-	static fromFileSync(filePath: string | URL): SDBM {
-		return new this(Deno.readFileSync(filePath));
-	}
-	/**
-	 * Initialize from readable stream, asynchronously.
+	 * Initialize from the readable stream, asynchronously.
 	 * @param {ReadableStream<SDBMAcceptDataType>} stream Readable stream.
 	 * @returns {Promise<SDBM>}
 	 */
