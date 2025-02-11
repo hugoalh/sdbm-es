@@ -114,7 +114,7 @@ export class SDBM {
 		return this;
 	}
 	/**
-	 * Initialize from the readable stream, asynchronously.
+	 * Initialize from the readable stream.
 	 * @param {ReadableStream<SDBMAcceptDataType>} stream Readable stream.
 	 * @returns {Promise<SDBM>}
 	 */

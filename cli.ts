@@ -11,7 +11,7 @@ const args = parseArgs(Deno.args, {
 });
 const fromFile: boolean = args.file;
 const fromStdin: boolean = args.stdin;
-const argsValues: string[] = args._.map((value: string | number): string => {
+const argsValues: readonly string[] = args._.map((value: string | number): string => {
 	return String(value);
 });
 if (fromFile && fromStdin) {
