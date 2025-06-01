@@ -64,6 +64,8 @@ Currently, only 32 bits is supported.
     hashBase16(): string;
     hashBase32Hex(): string;
     hashBase36(): string;
+    hashBase64(): string;
+    hashBase64URL(): string;
     hashBigInt(): bigint;
     hashHex(): string;
     hashHexPadding(): string;

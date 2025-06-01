@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 export type SDBMAcceptDataType = string | BigUint64Array | Uint8Array | Uint16Array | Uint32Array;
 /**
  * Get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
@@ -8,6 +9,11 @@ export class SDBM {
 	}
 	#freezed: boolean = false;
 	#hash: bigint | null = null;
+	#hashBase16: string | null = null;
+	#hashBase32Hex: string | null = null;
+	#hashBase36: string | null = null;
+	#hashBase64: string | null = null;
+	#hashBase64URL: string | null = null;
 	#bin: bigint = 0n;
 	/**
 	 * Initialize.
@@ -17,6 +23,17 @@ export class SDBM {
 		if (typeof data !== "undefined") {
 			this.update(data);
 		}
+	}
+	#clearStorage(): void {
+		if (this.#freezed) {
+			throw new Error(`Instance is freezed!`);
+		}
+		this.#hash = null;
+		this.#hashBase16 = null;
+		this.#hashBase32Hex = null;
+		this.#hashBase36 = null;
+		this.#hashBase64 = null;
+		this.#hashBase64URL = null;
 	}
 	/**
 	 * Whether the instance is freezed.
@@ -38,9 +55,7 @@ export class SDBM {
 	 * @returns {bigint}
 	 */
 	hash(): bigint {
-		if (this.#hash === null) {
-			this.#hash = BigInt.asUintN(32, this.#bin);
-		}
+		this.#hash ??= BigInt.asUintN(32, this.#bin);
 		return this.#hash;
 	}
 	/**
@@ -48,21 +63,40 @@ export class SDBM {
 	 * @returns {string}
 	 */
 	hashBase16(): string {
-		return this.hashBigInt().toString(16).toUpperCase();
+		this.#hashBase16 ??= this.hashBigInt().toString(16).toUpperCase();
+		return this.#hashBase16;
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in Base32Hex ({@link https://datatracker.ietf.org/doc/html/rfc4648#section-7 RFC 4648 §7}).
 	 * @returns {string}
 	 */
 	hashBase32Hex(): string {
-		return this.hashBigInt().toString(32).toUpperCase();
+		this.#hashBase32Hex ??= this.hashBigInt().toString(32).toUpperCase();
+		return this.#hashBase32Hex;
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in Base36.
 	 * @returns {string}
 	 */
 	hashBase36(): string {
-		return this.hashBigInt().toString(36).toUpperCase();
+		this.#hashBase36 ??= this.hashBigInt().toString(36).toUpperCase();
+		return this.#hashBase36;
+	}
+	/**
+	 * Get the non-cryptographic hash of the data, in Base64.
+	 * @returns {string}
+	 */
+	hashBase64(): string {
+		this.#hashBase64 ??= Buffer.from(this.hashBase16(), "hex").toString("base64");
+		return this.#hashBase64;
+	}
+	/**
+	 * Get the non-cryptographic hash of the data, in Base64URL.
+	 * @returns {string}
+	 */
+	hashBase64URL(): string {
+		this.#hashBase64URL ??= Buffer.from(this.hashBase16(), "hex").toString("base64url");
+		return this.#hashBase64URL;
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in big integer.
@@ -103,10 +137,7 @@ export class SDBM {
 	 * @returns {this}
 	 */
 	update(data: SDBMAcceptDataType): this {
-		if (this.#freezed) {
-			throw new Error(`Instance is freezed!`);
-		}
-		this.#hash = null;
+		this.#clearStorage();
 		const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
 		for (let index: number = 0; index < raw.length; index += 1) {
 			this.#bin = BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
