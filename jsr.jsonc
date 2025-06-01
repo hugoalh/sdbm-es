@@ -3,7 +3,6 @@
 	"name": "@hugoalh/sdbm",
 	"version": "0.1.0",
 	"exports": {
-		"./cli": "./cli.ts",
 		".": "./mod.ts"
 	},
 	"imports": {

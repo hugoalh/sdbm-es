@@ -6,7 +6,7 @@
 [![JSR: @hugoalh/sdbm](https://img.shields.io/jsr/v/@hugoalh/sdbm?label=@hugoalh/sdbm&labelColor=F7DF1E&logo=jsr&logoColor=000000&style=flat "JSR: @hugoalh/sdbm")](https://jsr.io/@hugoalh/sdbm)
 [![NPM: @hugoalh/sdbm](https://img.shields.io/npm/v/@hugoalh/sdbm?label=@hugoalh/sdbm&labelColor=CB3837&logo=npm&logoColor=ffffff&style=flat "NPM: @hugoalh/sdbm")](https://www.npmjs.com/package/@hugoalh/sdbm)
 
-An ECMAScript (JavaScript & TypeScript) CLI and module to get the non-cryptographic hash of the data with algorithm SDBM.
+An ECMAScript (JavaScript & TypeScript) module to get the non-cryptographic hash of the data with algorithm SDBM.
 
 Currently, only 32 bits is supported.
 
@@ -81,23 +81,6 @@ Currently, only 32 bits is supported.
 > - For the full or prettier documentation, can visit via:
 >   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/documentation_generator/)
 >   - [JSR](https://jsr.io/@hugoalh/sdbm)
-
-## 🧩 CLIs
-
-**Entrypoint:** `cli.js`/`cli.ts`
-
-- From argument; Output hex padding
-  ```ps1
-  sdbm {Data}
-  ```
-- From file; Output hex padding
-  ```ps1
-  sdbm --file {FilePath}
-  ```
-- From stdin; Output hex padding
-  ```ps1
-  sdbm --stdin
-  ```
 
 ## ✍️ Examples
 

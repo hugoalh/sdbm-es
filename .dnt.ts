@@ -8,20 +8,13 @@ await invokeDenoNodeJSTransformer({
 		"LICENSE.md",
 		"README.md"
 	],
-	entrypoints: [
-		...configJSR.getExports(),
-		{
-			executable: true,
-			name: "sdbm",
-			path: "./cli.ts"
-		}
-	],
+	entrypoints: configJSR.getExports(),
 	fixInjectedImports: true,
 	generateDeclarationMap: true,
 	metadata: {
 		name: configJSR.getName(),
 		version: configJSR.getVersion(),
-		description: "A CLI and module to get the non-cryptographic hash of the data with algorithm SDBM.",
+		description: "A module to get the non-cryptographic hash of the data with algorithm SDBM.",
 		keywords: [
 			"hash",
 			"sdbm"
