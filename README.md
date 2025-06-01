@@ -51,8 +51,7 @@ Currently, only 32 bits is supported.
 
 ### 🛡️ Runtime Permissions
 
-- **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
-  - *Resources* (Optional)
+*This module does not request any runtime permission.*
 
 ## 🧩 APIs
 
