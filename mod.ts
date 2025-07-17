@@ -108,6 +108,7 @@ export class SDBM {
 	/**
 	 * Get the non-cryptographic hash of the data, in big integer.
 	 * @returns {bigint}
+	 * @deprecated Use method {@linkcode SDBM.hashBigInt} instead.
 	 */
 	hashBigInteger: () => bigint = this.hashBigInt;
 	/**
@@ -134,6 +135,7 @@ export class SDBM {
 	/**
 	 * Get the non-cryptographic hash of the data, in number.
 	 * @returns {number}
+	 * @deprecated
 	 */
 	hashNumber(): number {
 		return Number(this.hash());

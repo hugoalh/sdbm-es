@@ -70,7 +70,6 @@ Currently, only 32 bits is supported.
     hashBuffer(): Buffer;
     hashHex(): string;
     hashHexPadding(): string;
-    hashNumber(): number;
     update(data: SDBMAcceptDataType): this;
     static fromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<SDBM>;
   }
