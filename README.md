@@ -64,18 +64,21 @@ Currently, only 32 bits is supported.
     hashBase16(): string;
     hashBase32Hex(): string;
     hashBase36(): string;
-    hashBase64(): string;
-    hashBase64URL(): string;
     hashBigInt(): bigint;
-    hashBuffer(): Buffer;
     hashHex(): string;
     hashHexPadding(): string;
+    hashUint8Array(): Uint8Array;
     update(data: SDBMAcceptDataType): this;
-    static fromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<SDBM>;
+    updateFromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<this>;
   }
   ```
 - ```ts
-  type SDBMAcceptDataType = string | BigUint64Array | Uint8Array | Uint16Array | Uint32Array;
+  type SDBMAcceptDataType =
+    | string
+    | BigUint64Array
+    | Uint8Array
+    | Uint16Array
+    | Uint32Array;
   ```
 
 > [!NOTE]
