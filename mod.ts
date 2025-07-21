@@ -138,7 +138,7 @@ export class SDBM {
 	}
 	/**
 	 * Append data from the readable stream.
-	 * @param {ReadableStream<SDBMAcceptDataType>} stream Readable stream.
+	 * @param {ReadableStream<SDBMAcceptDataType>} stream Data from the readable stream.
 	 * @returns {Promise<this>}
 	 */
 	async updateFromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<this> {
