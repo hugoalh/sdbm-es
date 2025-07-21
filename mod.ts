@@ -130,9 +130,9 @@ export class SDBM {
 	 */
 	update(data: SDBMAcceptDataType): this {
 		this.#clearStorage();
-		const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
-		for (let index: number = 0; index < raw.length; index += 1) {
-			this.#bin = BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+		const dataFmt: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
+		for (let index: number = 0; index < dataFmt.length; index += 1) {
+			this.#bin = BigInt(dataFmt.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
 		}
 		return this;
 	}
@@ -142,8 +142,24 @@ export class SDBM {
 	 * @returns {Promise<this>}
 	 */
 	async updateFromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<this> {
-		for await (const chunk of stream) {
-			this.update(chunk);
+		const reader: ReadableStreamDefaultReader<SDBMAcceptDataType> = stream.getReader();
+		let done: boolean = false;
+		let textDecoder: TextDecoder | undefined;
+		while (!done) {
+			const {
+				done: end,
+				value
+			}: ReadableStreamReadResult<SDBMAcceptDataType> = await reader.read();
+			done = end;
+			if (typeof value === "undefined") {
+				continue;
+			}
+			if (typeof value === "string") {
+				this.update(value);
+			} else {
+				textDecoder ??= new TextDecoder();
+				this.update(textDecoder.decode(value, { stream: !done }));
+			}
 		}
 		return this;
 	}
