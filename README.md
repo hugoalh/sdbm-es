@@ -62,11 +62,8 @@ Currently, only 32 bits is supported.
     freeze(): this;
     hash(): bigint;
     hashBase16(): string;
-    hashBase32Hex(): string;
-    hashBase36(): string;
     hashBigInt(): bigint;
     hashHex(): string;
-    hashHexPadding(): string;
     hashUint8Array(): Uint8Array;
     update(data: SDBMAcceptDataType): this;
     updateFromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<this>;
@@ -89,6 +86,6 @@ Currently, only 32 bits is supported.
 ## ✍️ Examples
 
 - ```ts
-  new SDBM("hello").hashHexPadding();
+  new SDBM("hello").hashHex();
   //=> "28D19932"
   ```
