@@ -6,9 +6,7 @@
 [![JSR: @hugoalh/sdbm](https://img.shields.io/jsr/v/@hugoalh/sdbm?label=@hugoalh/sdbm&labelColor=F7DF1E&logo=jsr&logoColor=000000&style=flat "JSR: @hugoalh/sdbm")](https://jsr.io/@hugoalh/sdbm)
 [![NPM: @hugoalh/sdbm](https://img.shields.io/npm/v/@hugoalh/sdbm?label=@hugoalh/sdbm&labelColor=CB3837&logo=npm&logoColor=ffffff&style=flat "NPM: @hugoalh/sdbm")](https://www.npmjs.com/package/@hugoalh/sdbm)
 
-An ECMAScript (JavaScript & TypeScript) module to get the non-cryptographic hash of the data with algorithm SDBM.
-
-Currently, only 32 bits is supported.
+An ECMAScript (JavaScript & TypeScript) module to get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
 
 ## 🔰 Begin
 
@@ -60,11 +58,8 @@ Currently, only 32 bits is supported.
     constructor(data?: SDBMAcceptDataType);
     get freezed(): boolean;
     freeze(): this;
-    hash(): bigint;
-    hashBase16(): string;
-    hashBigInt(): bigint;
+    hash(): Uint8Array;
     hashHex(): string;
-    hashUint8Array(): Uint8Array;
     update(data: SDBMAcceptDataType): this;
     updateFromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<this>;
   }

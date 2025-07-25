@@ -12,8 +12,7 @@ export class SDBM {
 		return "SDBM";
 	}
 	#freezed: boolean = false;
-	#hash: bigint | null = null;
-	#hashBase16: string | null = null;
+	#hashHex: string | null = null;
 	#hashUint8Array: Uint8Array | null = null;
 	#bin: bigint = 0n;
 	/**
@@ -24,14 +23,6 @@ export class SDBM {
 		if (typeof data !== "undefined") {
 			this.update(data);
 		}
-	}
-	#clearStorage(): void {
-		if (this.#freezed) {
-			throw new Error(`Instance is freezed!`);
-		}
-		this.#hash = null;
-		this.#hashBase16 = null;
-		this.#hashUint8Array = null;
 	}
 	/**
 	 * Whether the instance is freezed.
@@ -49,46 +40,15 @@ export class SDBM {
 		return this;
 	}
 	/**
-	 * Get the non-cryptographic hash of the data, in original format.
-	 * @returns {bigint}
-	 */
-	hash(): bigint {
-		this.#hash ??= BigInt.asUintN(32, this.#bin);
-		return this.#hash;
-	}
-	/**
-	 * Get the non-cryptographic hash of the data, in Base16.
-	 * @returns {string}
-	 */
-	hashBase16(): string {
-		this.#hashBase16 ??= this.hashBigInt().toString(16).toUpperCase();
-		return this.#hashBase16;
-	}
-	/**
-	 * Get the non-cryptographic hash of the data, in big integer.
-	 * @returns {bigint}
-	 */
-	hashBigInt(): bigint {
-		return this.hash();
-	}
-	/**
-	 * Get the non-cryptographic hash of the data, in hexadecimal with padding.
-	 * @returns {string}
-	 */
-	hashHex(): string {
-		return this.hashBase16().padStart(8, "0");
-	}
-	/**
 	 * Get the non-cryptographic hash of the data, in Uint8Array.
 	 * @returns {Uint8Array}
 	 */
-	hashUint8Array(): Uint8Array {
+	hash(): Uint8Array {
 		if (this.#hashUint8Array === null) {
 			const hex: string = this.hashHex();
-			const hexFmt: string = (hex.length % 2 === 0) ? hex : `0${hex}`;
 			const bytes: string[] = [];
-			for (let index: number = 0; index < hexFmt.length; index += 2) {
-				bytes.push(hexFmt.slice(index, index + 2));
+			for (let index: number = 0; index < hex.length; index += 2) {
+				bytes.push(hex.slice(index, index + 2));
 			}
 			this.#hashUint8Array = Uint8Array.from(bytes.map((byte: string): number => {
 				return Number.parseInt(byte, 16);
@@ -97,12 +57,29 @@ export class SDBM {
 		return Uint8Array.from(this.#hashUint8Array);
 	}
 	/**
+	 * Get the non-cryptographic hash of the data, in hexadecimal with padding.
+	 * @returns {string}
+	 */
+	hashHex(): string {
+		if (this.#hashHex === null) {
+			this.#hashHex = BigInt.asUintN(32, this.#bin).toString(16).toUpperCase().padStart(8, "0");
+			if (this.#hashHex.length !== 8) {
+				throw new Error(`Unexpected hash hex result \`${this.#hashHex}\`! Please submit a bug report.`);
+			}
+		}
+		return this.#hashHex;
+	}
+	/**
 	 * Append data.
 	 * @param {SDBMAcceptDataType} data Data.
 	 * @returns {this}
 	 */
 	update(data: SDBMAcceptDataType): this {
-		this.#clearStorage();
+		if (this.#freezed) {
+			throw new Error(`Instance is freezed!`);
+		}
+		this.#hashHex = null;
+		this.#hashUint8Array = null;
 		const dataFmt: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
 		for (let index: number = 0; index < dataFmt.length; index += 1) {
 			this.#bin = BigInt(dataFmt.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
