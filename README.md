@@ -4,8 +4,8 @@
 
 🔗
 [GitHub](https://github.com/hugoalh/sdbm-es)
-[JSR](https://jsr.io/@hugoalh/sdbm)
-[NPM](https://www.npmjs.com/package/@hugoalh/sdbm)
+● [JSR](https://jsr.io/@hugoalh/sdbm)
+● [NPM](https://www.npmjs.com/package/@hugoalh/sdbm)
 
 An ECMAScript module to get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
 
