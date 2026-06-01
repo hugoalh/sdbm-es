@@ -8,11 +8,7 @@ authors:
 repository-code: "https://github.com/hugoalh/sdbm-es"
 keywords:
   - "ecmascript"
-  - "ecmascript-module"
   - "es"
-  - "es-module"
-  - "esm"
-  - "esmodule"
   - "hash"
   - "javascript"
   - "js"
