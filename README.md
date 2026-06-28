@@ -3,7 +3,8 @@
 [**⚖️** MIT](./LICENSE.md)
 
 🔗
-[GitHub](https://github.com/hugoalh/sdbm-es)
+[DistBoard @hugoalh](https://hugoalh.github.io/distboard/sdbm_ecmascript)
+● [GitHub](https://github.com/hugoalh/sdbm-es)
 ● [JSR](https://jsr.io/@hugoalh/sdbm)
 ● [NPM](https://www.npmjs.com/package/@hugoalh/sdbm)
 
