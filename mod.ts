@@ -1,3 +1,7 @@
+if (typeof Uint8Array.fromHex === "undefined") {
+	//deno-lint-ignore hugoalh/no-import-dynamic -- Polyfill.
+	await import("npm:es-arraybuffer-base64@^1.1.2/Uint8Array.fromHex/auto");
+}
 export type SDBMAcceptDataType =
 	| string
 	| BigUint64Array
@@ -44,16 +48,7 @@ export class SDBM {
 	 * @returns {Uint8Array}
 	 */
 	hash(): Uint8Array {
-		if (this.#hashUint8Array === null) {
-			const hex: string = this.hashHex();
-			const bytes: string[] = [];
-			for (let index: number = 0; index < hex.length; index += 2) {
-				bytes.push(hex.slice(index, index + 2));
-			}
-			this.#hashUint8Array = Uint8Array.from(bytes.map((byte: string): number => {
-				return Number.parseInt(byte, 16);
-			}));
-		}
+		this.#hashUint8Array ??= Uint8Array.fromHex(this.hashHex());
 		return Uint8Array.from(this.#hashUint8Array);
 	}
 	/**
