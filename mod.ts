@@ -88,24 +88,8 @@ export class SDBM {
 	 * @returns {Promise<this>}
 	 */
 	async updateFromStream(stream: ReadableStream<SDBMAcceptDataType>): Promise<this> {
-		const reader: ReadableStreamDefaultReader<SDBMAcceptDataType> = stream.getReader();
-		let done: boolean = false;
-		let textDecoder: TextDecoder | undefined;
-		while (!done) {
-			const {
-				done: end,
-				value
-			}: ReadableStreamReadResult<SDBMAcceptDataType> = await reader.read();
-			done = end;
-			if (typeof value === "undefined") {
-				continue;
-			}
-			if (typeof value === "string") {
-				this.update(value);
-			} else {
-				textDecoder ??= new TextDecoder();
-				this.update(textDecoder.decode(value, { stream: !done }));
-			}
+		for await (const chunk of stream) {
+			this.update(chunk);
 		}
 		return this;
 	}
