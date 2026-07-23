@@ -40,6 +40,7 @@ This does not request any runtime permission.
 | **Name** | **Path** | **Description** |
 |:--|:--|:--|
 | `.` | `./mod.ts` | Default. |
+| `./cli` | `./cli.ts` | CLI. |
 
 > [!NOTE]
 > - Different runtimes have vary support for the sources and entrypoints, visit the runtime documentation for more information.
@@ -76,9 +77,30 @@ This does not request any runtime permission.
 >   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/doc/)
 >   - [JSR](https://jsr.io/@hugoalh/sdbm)
 
+## 🧩 CLIs
+
+- ```powershell
+  sdbm $Context
+  ```
+- ```powershell
+  sdbm --file $FilePath
+  <# 🔀 Unordered Positions: `--file`, `$FilePath` #>
+  ```
+- ```powershell
+  sdbm --stdin
+  ```
+
+| **Argument** | **Type** | **Description** |
+|:--|:--|:--|
+| `file` | `switch` | Whether the resource is from file. |
+| `stdin` | `switch` | Whether the resource is from standard stream input. |
+
 ## ✍️ Examples
 
 - ```ts
   new SDBM("hello").hashHex();
   //=> "28D19932"
+  ```
+- ```powershell
+  sdbm 'hello'
   ```
