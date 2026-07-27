@@ -19,7 +19,7 @@ if (fromFile && fromStdin) {
 }
 const expectArgumentsLength: number = fromStdin ? 0 : 1;
 if (argsValues.length !== expectArgumentsLength) {
-	throw new SyntaxError(`Invalid arguments length; Expect: ${expectArgumentsLength}, Current: ${argsValues.length}.`);
+	throw new SyntaxError(`Invalid arguments length! Expect: ${expectArgumentsLength}, Current: ${argsValues.length}.`);
 }
 const instance: SDBM = new SDBM();
 if (fromFile) {
