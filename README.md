@@ -22,29 +22,15 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
 
 This does not request any runtime permission.
 
-## #️⃣ Sources & Entrypoints
+## #️⃣ Entrypoints
 
-- GitHub Raw
-  ```
-  https://raw.githubusercontent.com/hugoalh/sdbm-es/{Tag}/mod.ts
-  ```
-- JSR
-  ```
-  jsr:@hugoalh/sdbm[@{Tag}]
-  ```
-- NPM
-  ```
-  npm:@hugoalh/sdbm[@{Tag}]
-  ```
-
-| **Name** | **Path** | **Description** |
-|:--|:--|:--|
-| `.` | `./mod.ts` | Default. |
-| `./cli` | `./cli.ts` | CLI. |
+| **Type** | **Name** | **Path** | **Description** |
+|:--|:--|:--|:--|
+| API | `.` | `./mod.ts` | Default. |
+| CLI | `./cli` | `./cli.ts` | Default. |
 
 > [!NOTE]
-> - Different runtimes have vary support for the sources and entrypoints, visit the runtime documentation for more information.
-> - It is recommended to include tag for immutability.
+> - Different runtimes have vary support for the entrypoints, visit the runtime documentation for more information.
 > - These are not part of the public APIs hence should not be used:
 >   - Benchmark/Test file (e.g.: `example.bench.ts`, `example.test.ts`).
 >   - Entrypoint name or path include any underscore prefix (e.g.: `_example.ts`, `foo/_example.ts`).
