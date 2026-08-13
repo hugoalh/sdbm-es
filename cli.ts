@@ -1,5 +1,12 @@
-#!/usr/bin/env -S deno run
-import { exit } from "node:process";
+import {
+	constants as fsConstants,
+	open as openFile,
+	type FileHandle
+} from "node:fs/promises";
+import {
+	exit,
+	stdin
+} from "node:process";
 import {
 	parseArgs,
 	styleText
@@ -48,10 +55,10 @@ if (positionals.length !== expectArgumentsLength) {
 }
 const instance: SDBM = new SDBM();
 if (fromFile) {
-	await using file: Deno.FsFile = await Deno.open(positionals[0]);
-	await instance.updateFromStream(file.readable);
+	await using file: FileHandle = await openFile(positionals[0], fsConstants.O_RDONLY);
+	await instance.updateFromStream(file.readableWebStream() as ReadableStream<Uint8Array>);
 } else if (fromStdin) {
-	await instance.updateFromStream(Deno.stdin.readable);
+	await instance.updateFromStream(stdin as unknown as ReadableStream<Uint8Array>);
 } else {
 	instance.update(positionals[0]);
 }
