@@ -83,7 +83,7 @@ This does not request any runtime permission.
 ## ✍️ Examples
 
 - ```ts
-  new SDBM("hello").hashHex();
+  new SDBM().update("hello").hashHex();
   //=> "28D19932"
   ```
 - ```powershell
