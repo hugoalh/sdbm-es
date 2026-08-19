@@ -40,7 +40,6 @@ This does not request any runtime permission.
 
 - ```ts
   class SDBM {
-    constructor(data?: SDBMAcceptDataType);
     get freezed(): boolean;
     freeze(): this;
     hash(): Uint8Array;

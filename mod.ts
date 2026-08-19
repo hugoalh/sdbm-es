@@ -21,8 +21,14 @@ export class SDBM {
 	#bin: bigint = 0n;
 	/**
 	 * Initialize.
-	 * @param {SDBMAcceptDataType} [data] Data. Can append later via the method {@linkcode SDBM.update} and {@linkcode SDBM.updateFromStream}.
 	 */
+	constructor();
+	/**
+	 * Initialize.
+	 * @param {SDBMAcceptDataType} data Data.
+	 * @deprecated Append data via the method {@linkcode SDBM.update} or {@linkcode SDBM.updateFromStream} instead.
+	 */
+	constructor(data: SDBMAcceptDataType);
 	constructor(data?: SDBMAcceptDataType) {
 		if (typeof data !== "undefined") {
 			this.update(data);
