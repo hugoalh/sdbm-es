@@ -9,10 +9,10 @@ Deno.test("Lock", { permissions: "none" }, () => {
 	});
 });
 Deno.test("Direct 1", { permissions: "none" }, () => {
-	deepStrictEqual(new SDBM("").hashHex(), "00000000");
+	deepStrictEqual(new SDBM().update("").hashHex(), "00000000");
 });
 Deno.test("Direct 2", { permissions: "none" }, () => {
-	deepStrictEqual(new SDBM("🦄🌈").hashHex(), "F19C2792");
+	deepStrictEqual(new SDBM().update("🦄🌈").hashHex(), "F19C2792");
 });
 Deno.test("Direct 3", { permissions: "none" }, () => {
 	const instance = new SDBM();
@@ -29,11 +29,11 @@ Deno.test("Direct 3", { permissions: "none" }, () => {
 	deepStrictEqual(instance.update("d").hashHex(), "19AE84C4");
 });
 Deno.test("Direct 4", { permissions: "none" }, () => {
-	deepStrictEqual(new SDBM("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.").hashHex(), "04D8A34A");
+	deepStrictEqual(new SDBM().update("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.").hashHex(), "04D8A34A");
 });
 async function testerStream(filePath: string): Promise<void> {
 	const sampleText = await Deno.readTextFile(filePath);
-	const hashFromText = new SDBM(sampleText).hash();
+	const hashFromText = new SDBM().update(sampleText).hash();
 	await using sampleFile = await Deno.open(filePath);
 	const hashFromStream = (await new SDBM().updateFromStream(sampleFile.readable)).hash();
 	deepStrictEqual(hashFromText, hashFromStream);
