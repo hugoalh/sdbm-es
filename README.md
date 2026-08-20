@@ -69,17 +69,15 @@ This does not request any runtime permission.
   ```
 - ```powershell
   sdbm --file $FilePath
-  <# 🔀 Unordered Positions: `--file`, `$FilePath` #>
   ```
-  | **Argument** | **Type** | **Description** |
-  |:--|:--|:--|
-  | `file` | `switch` | Whether the resource is from file. |
 - ```powershell
   sdbm --stdin
   ```
-  | **Argument** | **Type** | **Description** |
-  |:--|:--|:--|
-  | `stdin` | `switch` | Whether the resource is from standard stream input. |
+
+| **Argument** | **Type** | **Description** |
+|:--|:--|:--|
+| `file` | `switch` | Whether the resource is from file. |
+| `stdin` | `switch` | Whether the resource is from standard stream input. |
 
 ## ✍️ Examples
 
