@@ -3,10 +3,7 @@ import {
 	open as openFile,
 	type FileHandle
 } from "node:fs/promises";
-import {
-	exit,
-	stdin
-} from "node:process";
+import process from "node:process";
 import {
 	parseArgs,
 	styleText
@@ -15,20 +12,14 @@ import { SDBM } from "./mod.ts";
 if (!import.meta.main) {
 	throw new Error(`This entrypoint is for command line only!`);
 }
-addEventListener("unhandledrejection", (event: PromiseRejectionEvent): void => {
-	event.preventDefault();
-	let message: string;
-	if (event.reason instanceof Error) {
-		message = event.reason.message;
-		if ((event.reason.stack ?? "").length > 0) {
-			message += `\n${event.reason.stack}`;
-		}
-	} else {
-		message = String(event.reason);
+process.addListener("uncaughtException", (error: Error): void => {
+	let message: string = error.message;
+	if ((error.stack ?? "").length > 0) {
+		message += `\n${error.stack}`;
 	}
 	console.error(`${styleText(["red"], "ERROR", { validateStream: false })}\t${message}`);
-	exit(1);
-}, { capture: true });
+	process.exit(1);
+});
 const {
 	positionals,
 	values: {
@@ -58,7 +49,7 @@ if (fromFile) {
 	await using file: FileHandle = await openFile(positionals[0], fsConstants.O_RDONLY);
 	await instance.updateFromStream(file.readableWebStream() as ReadableStream<Uint8Array>);
 } else if (fromStdin) {
-	await instance.updateFromStream(stdin as unknown as ReadableStream<Uint8Array>);
+	await instance.updateFromStream(process.stdin as unknown as ReadableStream<Uint8Array>);
 } else {
 	instance.update(positionals[0]);
 }
