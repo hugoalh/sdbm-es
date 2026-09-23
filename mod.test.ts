@@ -32,11 +32,10 @@ Deno.test("Direct 4", { permissions: "none" }, () => {
 	deepStrictEqual(new SDBM().update("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.").hashHex(), "04D8A34A");
 });
 async function testerStream(filePath: string): Promise<void> {
-	const sampleText = await Deno.readTextFile(filePath);
-	const hashFromText = new SDBM().update(sampleText).hash();
+	const hashDirect = new SDBM().update(await Deno.readFile(filePath)).hash();
 	await using sampleFile = await Deno.open(filePath);
-	const hashFromStream = (await new SDBM().updateFromStream(sampleFile.readable)).hash();
-	deepStrictEqual(hashFromText, hashFromStream);
+	const hashStream = (await new SDBM().updateFromStream(sampleFile.readable)).hash();
+	deepStrictEqual(hashDirect, hashStream);
 }
 Deno.test("Stream 1", {
 	permissions: {
