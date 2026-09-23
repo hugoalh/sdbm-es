@@ -20,21 +20,6 @@ export class SDBM {
 	#hashUint8Array: Uint8Array | null = null;
 	#bin: bigint = 0n;
 	/**
-	 * Initialize.
-	 */
-	constructor();
-	/**
-	 * Initialize.
-	 * @param {SDBMAcceptDataType} data Data.
-	 * @deprecated Append data via the method {@linkcode SDBM.update} or {@linkcode SDBM.updateFromStream} instead.
-	 */
-	constructor(data: SDBMAcceptDataType);
-	constructor(data?: SDBMAcceptDataType) {
-		if (typeof data !== "undefined") {
-			this.update(data);
-		}
-	}
-	/**
 	 * Whether the instance is freezed.
 	 * @returns {boolean}
 	 */
