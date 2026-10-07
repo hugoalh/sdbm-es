@@ -27,6 +27,17 @@ export class SDBM {
 		return this.#freezed;
 	}
 	/**
+	 * Clone the instance.
+	 * @returns {SDBM}
+	 */
+	clone(): SDBM {
+		const instance: SDBM = new SDBM();
+		instance.#freezed = this.#freezed;
+		instance.#hashHex = this.#hashHex;
+		instance.#bin = this.#bin;
+		return instance;
+	}
+	/**
 	 * Freeze the instance to prevent any further update.
 	 * @returns {this}
 	 */

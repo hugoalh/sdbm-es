@@ -41,6 +41,7 @@ This does not request any runtime permission.
 - ```ts
   class SDBM {
     get freezed(): boolean;
+    clone(): SDBM;
     freeze(): this;
     hash(): Uint8Array;
     hashHex(): string;
