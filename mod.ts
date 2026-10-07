@@ -4,10 +4,7 @@ if (typeof Uint8Array.fromHex === "undefined") {
 }
 export type SDBMAcceptDataType =
 	| string
-	| BigUint64Array
-	| Uint8Array
-	| Uint16Array
-	| Uint32Array;
+	| Uint8Array;
 /**
  * Get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
  */
@@ -17,7 +14,6 @@ export class SDBM {
 	}
 	#freezed: boolean = false;
 	#hashHex: string | null = null;
-	#hashUint8Array: Uint8Array | null = null;
 	#bin: bigint = 0n;
 	/**
 	 * Whether the instance is freezed.
@@ -50,8 +46,7 @@ export class SDBM {
 	 * @returns {Uint8Array}
 	 */
 	hash(): Uint8Array {
-		this.#hashUint8Array ??= Uint8Array.fromHex(this.hashHex());
-		return Uint8Array.from(this.#hashUint8Array);
+		return Uint8Array.from(this.hashHex());
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in hexadecimal with padding.
@@ -65,7 +60,7 @@ export class SDBM {
 			}
 			this.#hashHex = result;
 		}
-		return this.#hashHex;
+		return structuredClone(this.#hashHex);
 	}
 	/**
 	 * Append data.
@@ -77,10 +72,9 @@ export class SDBM {
 			throw new Error(`Instance is freezed!`);
 		}
 		this.#hashHex = null;
-		this.#hashUint8Array = null;
-		const dataFmt: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
-		for (let index: number = 0; index < dataFmt.length; index += 1) {
-			this.#bin = BigInt(dataFmt.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+		const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
+		for (let index: number = 0; index < raw.length; index += 1) {
+			this.#bin = BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
 		}
 		return this;
 	}

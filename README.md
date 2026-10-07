@@ -52,10 +52,7 @@ This does not request any runtime permission.
 - ```ts
   type SDBMAcceptDataType =
     | string
-    | BigUint64Array
-    | Uint8Array
-    | Uint16Array
-    | Uint32Array;
+    | Uint8Array;
   ```
 
 > [!NOTE]
