@@ -5,8 +5,40 @@ if (typeof Uint8Array.fromHex === "undefined") {
 export type SDBMAcceptDataType =
 	| string
 	| Uint8Array;
+export type SDBMBitsSize =
+	| 32
+	| 64;
+const bitsSizes: readonly SDBMBitsSize[] = [/* UNIQUE */
+	32,
+	64
+];
+export type SDBMInterpretMode =
+	| "bytes"
+	| "unicode-code-points"
+	| "utf16-code-units";
+const interpretModes: readonly SDBMInterpretMode[] = [/* UNIQUE */
+	"bytes",
+	"unicode-code-points",
+	"utf16-code-units"
+];
+export interface SDBMOptions {
+	/**
+	 * Data interpret mode of the SDBM.
+	 * 
+	 * - **`bytes`:** UTF-8 encoded bytes.
+	 * - **`unicode-code-points`:**: Unicode code points.
+	 * - **`utf16-code-units`:** UTF-16 code units; Used in the previous versions.
+	 * @default {"byte"}
+	 */
+	interpret?: SDBMInterpretMode;
+	/**
+	 * Bits size of the SDBM.
+	 * @default {32}
+	 */
+	size?: SDBMBitsSize;
+}
 /**
- * Get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
+ * Get the non-cryptographic hash of the data with algorithm SDBM.
  */
 export class SDBM {
 	get [Symbol.toStringTag](): string {
@@ -14,7 +46,27 @@ export class SDBM {
 	}
 	#freezed: boolean = false;
 	#hashHex: string | null = null;
+	#interpret: SDBMInterpretMode;
+	#size: SDBMBitsSize;
 	#bin: bigint = 0n;
+	/**
+	 * Initialize.
+	 * @param {SDBMOptions} [options={}] Options.
+	 */
+	constructor(options: SDBMOptions = {}) {
+		const {
+			interpret = "bytes",
+			size = 32
+		}: SDBMOptions = options;
+		if (!interpretModes.includes(interpret)) {
+			throw new RangeError(`\`${interpret}\` is not a valid SDBM hash data interpret mode! Only accept these values: ${interpretModes.join(", ")}.`);
+		}
+		if (!bitsSizes.includes(size)) {
+			throw new RangeError(`\`${size}\` is not a valid SDBM hash bits size! Only accept these values: ${bitsSizes.join(", ")}.`);
+		}
+		this.#interpret = interpret;
+		this.#size = size;
+	}
 	/**
 	 * Whether the instance is freezed.
 	 * @returns {boolean}
@@ -30,6 +82,8 @@ export class SDBM {
 		const instance: SDBM = new SDBM();
 		instance.#freezed = this.#freezed;
 		instance.#hashHex = this.#hashHex;
+		instance.#interpret = this.#interpret;
+		instance.#size = this.#size;
 		instance.#bin = this.#bin;
 		return instance;
 	}
@@ -54,8 +108,8 @@ export class SDBM {
 	 */
 	hashHex(): string {
 		if (this.#hashHex === null) {
-			const result: string = BigInt.asUintN(32, this.#bin).toString(16).toUpperCase().padStart(8, "0");
-			if (result.length !== 8) {
+			const result: string = BigInt.asUintN(this.#size, this.#bin).toString(16).toUpperCase().padStart(this.#size / 4, "0");
+			if (result.length !== this.#size / 4) {
 				throw new Error(`Unexpected hash hex result \`${result}\`! Please submit a bug report.`);
 			}
 			this.#hashHex = result;
@@ -72,9 +126,21 @@ export class SDBM {
 			throw new Error(`Instance is freezed!`);
 		}
 		this.#hashHex = null;
-		const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
-		for (let index: number = 0; index < raw.length; index += 1) {
-			this.#bin = BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+		if (this.#interpret === "unicode-code-points") {
+			const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
+			for (const character of raw) {
+				this.#bin = BigInt(character.codePointAt(0)!) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+			}
+		} else if (this.#interpret === "utf16-code-units") {
+			const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
+			for (let index: number = 0; index < raw.length; index += 1) {
+				this.#bin = BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+			}
+		} else {
+			const bytes: Uint8Array = (typeof data === "string") ? new TextEncoder().encode(data) : data;
+			for (const byte of bytes) {
+				this.#bin = BigInt(byte) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+			}
 		}
 		return this;
 	}

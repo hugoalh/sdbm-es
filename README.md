@@ -8,7 +8,12 @@
 ● [JSR](https://jsr.io/@hugoalh/sdbm)
 ● [NPM](https://www.npmjs.com/package/@hugoalh/sdbm)
 
-An ECMAScript module to get the non-cryptographic hash of the data with algorithm SDBM (32 bits).
+An ECMAScript module to get the non-cryptographic hash of the data with algorithm SDBM.
+
+## 🌟 Features
+
+- Support bits size of 32 and 64.
+- Support data interpret mode of bytes, Unicode code points and UTF-16 code units.
 
 ## 🎯 Runtime Targets
 
@@ -40,6 +45,7 @@ This does not request any runtime permission.
 
 - ```ts
   class SDBM {
+    constructor(options?: SDBMOptions);
     get freezed(): boolean;
     clone(): SDBM;
     freeze(): this;
@@ -53,6 +59,12 @@ This does not request any runtime permission.
   type SDBMAcceptDataType =
     | string
     | Uint8Array;
+  ```
+- ```ts
+  interface SDBMOptions {
+    interpret?: SDBMInterpretMode;
+    size?: SDBMBitsSize;
+  }
   ```
 
 > [!NOTE]
@@ -75,12 +87,14 @@ This does not request any runtime permission.
 | **Argument** | **Type** | **Description** |
 |:--|:--|:--|
 | `file` | `switch` | Whether the resource is from file. |
+| `interpret` | `DJB2aInterpretMode = "bytes"` | Data interpret mode of the DJB2a. |
+| `size` | `DJB2aBitsSize = 32` | Bits size of the DJB2a. |
 | `stdin` | `switch` | Whether the resource is from standard stream input. |
 
 ## ✍️ Examples
 
 - ```ts
-  new SDBM().update("hello").hashHex();
+  new SDBM({ interpret: "utf16-code-units" }).update("hello").hashHex();
   //=> "28D19932"
   ```
 - ```powershell

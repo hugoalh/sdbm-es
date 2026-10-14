@@ -8,7 +8,11 @@ import {
 	parseArgs,
 	styleText
 } from "node:util";
-import { SDBM } from "./mod.ts";
+import {
+	SDBM,
+	type SDBMBitsSize,
+	type SDBMInterpretMode
+} from "./mod.ts";
 if (!import.meta.main) {
 	throw new Error(`This entrypoint is for command line only!`);
 }
@@ -24,6 +28,8 @@ const {
 	positionals,
 	values: {
 		file: fromFile = false,
+		interpret,
+		size,
 		stdin: fromStdin = false
 	}
 } = parseArgs({
@@ -31,6 +37,12 @@ const {
 	options: {
 		file: {
 			type: "boolean"
+		},
+		interpret: {
+			type: "string"
+		},
+		size: {
+			type: "string"
 		},
 		stdin: {
 			type: "boolean"
@@ -44,7 +56,10 @@ const expectArgumentsLength: number = fromStdin ? 0 : 1;
 if (positionals.length !== expectArgumentsLength) {
 	throw new SyntaxError(`Invalid arguments length! Expect: ${expectArgumentsLength}, Current: ${positionals.length}.`);
 }
-const instance: SDBM = new SDBM();
+const instance: SDBM = new SDBM({
+	interpret: interpret as SDBMInterpretMode | undefined,
+	size: (typeof size === "undefined") ? undefined : (Number(size) as SDBMBitsSize)
+});
 if (fromFile) {
 	await using file: FileHandle = await openFile(positionals[0], fsConstants.O_RDONLY);
 	await instance.updateFromStream(file.readableWebStream() as ReadableStream<Uint8Array>);
