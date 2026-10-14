@@ -75,13 +75,13 @@ This does not request any runtime permission.
 ## 🧩 CLIs
 
 - ```powershell
-  sdbm $Context
+  sdbm $Context [--interpret $Interpret] [--size $Size]
   ```
 - ```powershell
-  sdbm --file $FilePath
+  sdbm --file $FilePath [--interpret $Interpret] [--size $Size]
   ```
 - ```powershell
-  sdbm --stdin
+  sdbm --stdin [--interpret $Interpret] [--size $Size]
   ```
 
 | **Argument** | **Type** | **Description** |
