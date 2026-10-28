@@ -100,7 +100,7 @@ export class SDBM {
 	 * @returns {Uint8Array}
 	 */
 	hash(): Uint8Array {
-		return Uint8Array.from(this.hashHex());
+		return Uint8Array.fromHex(this.hashHex());
 	}
 	/**
 	 * Get the non-cryptographic hash of the data, in hexadecimal with padding.
