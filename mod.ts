@@ -127,17 +127,17 @@ export class SDBM {
 		}
 		this.#hashHex = null;
 		if (this.#interpret === "unicode-code-points") {
-			const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
+			const raw: string = (typeof data === "string") ? structuredClone(data) : new TextDecoder().decode(data);
 			for (const character of raw) {
 				this.#bin = BigInt(character.codePointAt(0)!) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
 			}
 		} else if (this.#interpret === "utf16-code-units") {
-			const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
+			const raw: string = (typeof data === "string") ? structuredClone(data) : new TextDecoder().decode(data);
 			for (let index: number = 0; index < raw.length; index += 1) {
 				this.#bin = BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
 			}
 		} else {
-			const bytes: Uint8Array = (typeof data === "string") ? new TextEncoder().encode(data) : data;
+			const bytes: Uint8Array = (typeof data === "string") ? new TextEncoder().encode(data) : structuredClone(data);
 			for (const byte of bytes) {
 				this.#bin = BigInt(byte) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
 			}
