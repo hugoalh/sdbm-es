@@ -108,7 +108,7 @@ export class SDBM {
 	 */
 	hashHex(): string {
 		if (this.#hashHex === null) {
-			const result: string = BigInt.asUintN(this.#size, this.#bin).toString(16).toUpperCase().padStart(this.#size / 4, "0");
+			const result: string = this.#bin.toString(16).toUpperCase().padStart(this.#size / 4, "0");
 			if (result.length !== this.#size / 4) {
 				throw new Error(`Unexpected hash hex result \`${result}\`! Please submit a bug report.`);
 			}
@@ -129,17 +129,17 @@ export class SDBM {
 		if (this.#interpret === "unicode-code-points") {
 			const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
 			for (const character of raw) {
-				this.#bin = BigInt(character.codePointAt(0)!) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+				this.#bin = BigInt.asUintN(this.#size, BigInt(character.codePointAt(0)!) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin);
 			}
 		} else if (this.#interpret === "utf16-code-units") {
 			const raw: string = (typeof data === "string") ? data : new TextDecoder().decode(data);
 			for (let index: number = 0; index < raw.length; index += 1) {
-				this.#bin = BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+				this.#bin = BigInt.asUintN(this.#size, BigInt(raw.charCodeAt(index)) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin);
 			}
 		} else {
 			const bytes: Uint8Array = (typeof data === "string") ? new TextEncoder().encode(data) : structuredClone(data);
 			for (const byte of bytes) {
-				this.#bin = BigInt(byte) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin;
+				this.#bin = BigInt.asUintN(this.#size, BigInt(byte) + (this.#bin << 6n) + (this.#bin << 16n) - this.#bin);
 			}
 		}
 		return this;
